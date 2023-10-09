@@ -1,4 +1,4 @@
-# WEB103 Project 3 - *Name of App Here*
+# WEB103 Project 3 - *UNITYGRID PLAZA*
 
 Submitted by: **Jiarui Liang**
 
