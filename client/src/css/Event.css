@@ -34,9 +34,18 @@
 .text {
     position: absolute;
     overflow: hidden;
+    width: 300px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.event-information-overlay .negative {
+    background-color: red;
+    color: white;
+    font-weight: 700;
+    padding: 10px;
+    text-align: center;
 }
 
 .text i {

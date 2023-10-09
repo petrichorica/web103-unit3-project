@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import '../css/Event.css'
+import EventsAPI from '../services/EventsAPI'
+import dates from '../services/dates'
 
 const Event = (props) => {
 
     const [event, setEvent] = useState([])
     const [time, setTime] = useState([])
+    const [date, setDate] = useState([])
     const [remaining, setRemaining] = useState([])
+    const [daysRemaining, setDaysRemaining] = useState([])
 
     useEffect(() => {
         (async () => {
             try {
-                const eventData = await EventsAPI.getEventsById(props.id)
+                const eventData = await EventsAPI.getMusicEventById(props.id)
                 setEvent(eventData)
             }
             catch (error) {
@@ -34,9 +38,23 @@ const Event = (props) => {
     useEffect(() => {
         (async () => {
             try {
-                const timeRemaining = await dates.formatRemainingTime(event.remaining)
+                const result = await dates.formatDate(event.date)
+                setDate(result)
+            }
+            catch (error) {
+                throw error
+            }
+        }) ()
+    })
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const daysRemaining = await dates.daysRemaining(event.date)
+                setDaysRemaining(daysRemaining)
+                const timeRemaining = await dates.formatRemainingTime(event.date)
                 setRemaining(timeRemaining)
-                dates.formatNegativeTimeRemaining(remaining, event.id)
+                // dates.formatNegativeTimeRemaining(remaining, event.id)
             }
             catch (error) {
                 throw error
@@ -50,9 +68,13 @@ const Event = (props) => {
 
             <div className='event-information-overlay'>
                 <div className='text'>
-                    <h3>{event.title}</h3>
-                    <p><i className="fa-regular fa-calendar fa-bounce"></i> {event.date} <br /> {time}</p>
-                    <p id={`remaining-${event.id}`}>{remaining}</p>
+                    <h4>{event.title}</h4>
+                    <p><i className="fa-regular fa-calendar fa-bounce"></i> {date} <br /> {time}</p>
+                    {daysRemaining >= 0 ? 
+                        <p id={`remaining-${event.id}`}>{remaining}</p>
+                        :
+                        <p id={`remaining-${event.id}`} className='negative'>{remaining}</p>
+                    }
                 </div>
             </div>
         </article>
